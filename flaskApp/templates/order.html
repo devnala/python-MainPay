@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://api-std.mainpay.co.kr/js/mainpay.pc-1.0.js"></script>
+<script type='text/javascript'> 
+	var READY_API_URL = "http://localhost:5000/ready";
+	function payment() {		
+		var request = Mainpay.ready(READY_API_URL);
+		request.done(function(response) {
+			if (response.resultCode == '200') {
+				/* 결제창 호출 */
+				Mainpay.open(response.data.nextPcUrl);
+				return false;
+			}
+			alert("ERROR : "+JSON.stringify(response));			 				
+		});		
+	}
+	/* 결제 팝업이 닫혔을 경우 호출*/
+	function mainpay_close_event() {
+		alert("결제창이 닫혔습니다.");   
+	}
+</script>  
+</head>
+<body>
+	<div class="container-pop">
+		<form id="MAINPAY_FORM" name="MAINPAY_FORM" method="post" >
+        	<input name="mbrNo" type="text" value="100011" readonly="readonly"/>
+        	<input name="goodsName" type="text" value="developers 아이패드" readonly="readonly"/>
+		</form>
+		<button onclick="payment()">결제요청</button>
+</body>
+</html>
